@@ -1,5 +1,9 @@
 #!/bin/bash
 
+# this file will create the according vm
+# and generate one script file called "aharepro.sh"
+# in that script it will execute the repro.sh script remotely in the vm created
+
 THIS_DIR="$( cd "$(dirname ${BASH_SOURCE[0]})" && pwd)"
 # az login --use-device-code
 # az account set --subscription "a6dbae07-f1f7-49da-ab9d-4dab678a37a8"
@@ -70,7 +74,7 @@ for region in ${regions[@]}; do
         az network public-ip list --query "[?resourceGroup=='tlsrepro$region'].ipAddress" -o tsv | xargs -L 1 -I {} echo scp ./repro.sh azureuser@{}:~ >> $ahareproscript
         # ssh username@remote_machine_ip "bash /path/to/script/script.sh"
         echo "echo \"verifying vm in $subscription, $region\"" >> $ahareproscript
-        az network public-ip list --query "[?resourceGroup=='tlsrepro$region'].ipAddress" -o tsv | xargs -L 1 -I {} echo "ssh azureuser@{} 'chmod +x ~/repro.sh && ~/repro.sh'" >> $ahareproscript
+        az network public-ip list --query "[?resourceGroup=='tlsrepro$region'].ipAddress" -o tsv | xargs -L 1 -I {} echo "ssh -o 'StrictHostKeyChecking no' azureuser@{} 'chmod +x ~/repro.sh && ~/repro.sh'" >> $ahareproscript
     done
 done
 
