@@ -71,7 +71,7 @@ for region in ${regions[@]}; do
         # get the 
         echo "# subscription $subscription" >> $ahareproscript
         echo "# region $region" >> $ahareproscript
-        az network public-ip list --query "[?resourceGroup=='tlsrepro$region'].ipAddress" -o tsv | xargs -L 1 -I {} echo scp ./repro.sh azureuser@{}:~ >> $ahareproscript
+        az network public-ip list --query "[?resourceGroup=='tlsrepro$region'].ipAddress" -o tsv | xargs -L 1 -I {} echo "scp -o 'StrictHostKeyChecking no' ./repro.sh azureuser@{}:~" >> $ahareproscript
         # ssh username@remote_machine_ip "bash /path/to/script/script.sh"
         echo "echo \"verifying vm in $subscription, $region\"" >> $ahareproscript
         az network public-ip list --query "[?resourceGroup=='tlsrepro$region'].ipAddress" -o tsv | xargs -L 1 -I {} echo "ssh -o 'StrictHostKeyChecking no' azureuser@{} 'chmod +x ~/repro.sh && ~/repro.sh'" >> $ahareproscript
