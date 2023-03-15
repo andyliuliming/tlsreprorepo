@@ -55,26 +55,26 @@ for region in ${regions[@]}; do
         # echo "deleting resource group tlsrepro$region"
         # az group delete --name "tlsrepro$region" --yes --no-wait || true
         echo "creating resource group tlsrepro$region"
-        az group create --name "tlsrepro$region" --location $region || true
-        for i in {1..5}; do
-            vmname="tlsrepro$regionvmname$i"
-            echo "creating vm $vmname in $region"
-            az vm create \
-                --resource-group "tlsrepro$region" \
-                --name $vmname \
-                --image debian \
-                --admin-username azureuser \
-                --ssh-key-values ${THIS_DIR}/andliu-id.pub ${THIS_DIR}/qian-id.pub \
-                --size Standard_D2s_v3 \
-                --public-ip-sku Standard || true
-        done
+        # az group create --name "tlsrepro$region" --location $region || true
+        # for i in {1..5}; do
+        #     vmname="tlsrepro$regionvmname$i"
+        #     echo "creating vm $vmname in $region"
+        #     az vm create \
+        #         --resource-group "tlsrepro$region" \
+        #         --name $vmname \
+        #         --image debian \
+        #         --admin-username azureuser \
+        #         --ssh-key-values ${THIS_DIR}/andliu-id.pub ${THIS_DIR}/qian-id.pub \
+        #         --size Standard_D2s_v3 \
+        #         --public-ip-sku Standard || true
+        # done
         # get the public ip addresses
         echo "# subscription $subscription" >> $ahareproscript
         echo "# region $region" >> $ahareproscript
         az network public-ip list --query "[?resourceGroup=='tlsrepro$region'].ipAddress" -o tsv | xargs -L 1 -I {} echo "scp -o 'StrictHostKeyChecking no' ./repro.sh azureuser@{}:~" >> $ahareproscript
         # ssh username@remote_machine_ip "bash /path/to/script/script.sh"
         echo "echo \"verifying vm in $subscription, $region\"" >> $ahareproscript
-        az network public-ip list --query "[?resourceGroup=='tlsrepro$region'].ipAddress" -o tsv | xargs -L 1 -I {} echo "bash -c \"echo 'verify: {}'\nssh -o 'StrictHostKeyChecking no' azureuser@{} 'chmod +x ~/repro.sh && ~/repro.sh' > '{}.log'\" &" >> $ahareproscript
+        az network public-ip list --query "[?resourceGroup=='tlsrepro$region'].ipAddress" -o tsv | xargs -L 1 -I {} echo "bash -c \"echo 'verify: {}'\nssh -o 'StrictHostKeyChecking no' azureuser@{} 'chmod +x ~/repro.sh && ~/repro.sh' > './reprologs/{}.log'\" &" >> $ahareproscript
     done
 done
 

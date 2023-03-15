@@ -48,3 +48,4 @@ while true; do
 done
 echorm -r ./reprologs && mkdir -p ./reprologs
 rm -r ./reprologs && mkdir -p ./reprologs
+rm -r ./reprologs && mkdir -p ./reprologs
