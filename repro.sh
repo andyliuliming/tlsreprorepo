@@ -44,6 +44,6 @@ while true; do
     exit
   fi
   # Use sleep to wait for 1 second before repeating the loop
-  sleep 1
+  sleep 0.1
 done
 echo

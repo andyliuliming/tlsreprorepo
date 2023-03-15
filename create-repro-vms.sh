@@ -45,7 +45,7 @@ IGNlcnRpZmljYXRlIGF2YWlsYWJsZSB3aXRob3V0IGRldGFpbGVkIGVycm9yOiAnICRmYWlsdXJl
 X25vX2NlcnQKICAgIGVjaG8gJ1RvdGFsOiAnICR0b3RhbCAnIENvbW1hbmQ6IG9wZW5zc2wgc19j
 bGllbnQgLWNvbm5lY3QgJyAkdXJsICc6NDQzICAtdmVyaWZ5X3JldHVybl9lcnJvciA8PDwgIlEi
 IDI+JjEnCiAgICBlY2hvCiAgICBleGl0CiAgZmkKICAjIFVzZSBzbGVlcCB0byB3YWl0IGZvciAx
-IHNlY29uZCBiZWZvcmUgcmVwZWF0aW5nIHRoZSBsb29wCiAgc2xlZXAgMQpkb25lCmVjaG8=" | base64 -d > ./repro.sh
+IHNlY29uZCBiZWZvcmUgcmVwZWF0aW5nIHRoZSBsb29wCiAgc2xlZXAgMC4xCmRvbmUKZWNobw==" | base64 -d > ./repro.sh
 EOF
 for region in ${regions[@]}; do
     # clean up
@@ -67,7 +67,7 @@ for region in ${regions[@]}; do
                 --size Standard_D2s_v3 \
                 --public-ip-sku Standard || true
         done
-        # get the 
+        # get the public ip addresses
         echo "# subscription $subscription" >> $ahareproscript
         echo "# region $region" >> $ahareproscript
         az network public-ip list --query "[?resourceGroup=='tlsrepro$region'].ipAddress" -o tsv | xargs -L 1 -I {} echo "scp -o 'StrictHostKeyChecking no' ./repro.sh azureuser@{}:~" >> $ahareproscript
