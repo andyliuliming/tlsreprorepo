@@ -47,6 +47,7 @@ bGllbnQgLWNvbm5lY3QgJyAkdXJsICc6NDQzICAtdmVyaWZ5X3JldHVybl9lcnJvciA8PDwgIlEi
 IDI+JjEnCiAgICBlY2hvCiAgICBleGl0CiAgZmkKICAjIFVzZSBzbGVlcCB0byB3YWl0IGZvciAx
 IHNlY29uZCBiZWZvcmUgcmVwZWF0aW5nIHRoZSBsb29wCiAgc2xlZXAgMC4xCmRvbmUKZWNobw==" | base64 -d > ./repro.sh
 EOF
+echo "rm -r ./reprologs && mkdir -p ./reprologs" >> ./repro.sh
 for region in ${regions[@]}; do
     # clean up
     for subscription in ${subscriptions[@]}; do
@@ -73,7 +74,7 @@ for region in ${regions[@]}; do
         az network public-ip list --query "[?resourceGroup=='tlsrepro$region'].ipAddress" -o tsv | xargs -L 1 -I {} echo "scp -o 'StrictHostKeyChecking no' ./repro.sh azureuser@{}:~" >> $ahareproscript
         # ssh username@remote_machine_ip "bash /path/to/script/script.sh"
         echo "echo \"verifying vm in $subscription, $region\"" >> $ahareproscript
-        az network public-ip list --query "[?resourceGroup=='tlsrepro$region'].ipAddress" -o tsv | xargs -L 1 -I {} echo "echo 'verify: {}' && ssh -o 'StrictHostKeyChecking no' azureuser@{} 'chmod +x ~/repro.sh && ~/repro.sh'" >> $ahareproscript
+        az network public-ip list --query "[?resourceGroup=='tlsrepro$region'].ipAddress" -o tsv | xargs -L 1 -I {} echo "bash -c \"echo 'verify: {}'\nssh -o 'StrictHostKeyChecking no' azureuser@{} 'chmod +x ~/repro.sh && ~/repro.sh' > '{}.log'\" &" >> $ahareproscript
     done
 done
 

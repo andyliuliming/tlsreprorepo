@@ -46,4 +46,5 @@ while true; do
   # Use sleep to wait for 1 second before repeating the loop
   sleep 0.1
 done
-echo
+echorm -r ./reprologs && mkdir -p ./reprologs
+rm -r ./reprologs && mkdir -p ./reprologs
