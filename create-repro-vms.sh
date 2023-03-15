@@ -47,7 +47,7 @@ bGllbnQgLWNvbm5lY3QgJyAkdXJsICc6NDQzICAtdmVyaWZ5X3JldHVybl9lcnJvciA8PDwgIlEi
 IDI+JjEnCiAgICBlY2hvCiAgICBleGl0CiAgZmkKICAjIFVzZSBzbGVlcCB0byB3YWl0IGZvciAx
 IHNlY29uZCBiZWZvcmUgcmVwZWF0aW5nIHRoZSBsb29wCiAgc2xlZXAgMC4xCmRvbmUKZWNobw==" | base64 -d > ./repro.sh
 EOF
-echo "rm -r ./reprologs && mkdir -p ./reprologs" >> ./repro.sh
+echo "rm -r ./reprologs && mkdir -p ./reprologs" >> $ahareproscript
 for region in ${regions[@]}; do
     # clean up
     for subscription in ${subscriptions[@]}; do
