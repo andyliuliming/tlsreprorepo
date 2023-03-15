@@ -52,9 +52,8 @@ for region in ${regions[@]}; do
         # az group delete --name "tlsrepro$region" --yes --no-wait || true
         echo "creating resource group tlsrepro$region"
         az group create --name "tlsrepro$region" --location $region || true
-        vmname="tlsrepro$region"
         for i in {1..5}; do
-            vmname="$vmname$i"
+            vmname="tlsrepro$regionvmname$i"
             echo "creating vm $vmname in $region"
             az vm create \
                 --resource-group "tlsrepro$region" \
