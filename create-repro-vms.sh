@@ -11,8 +11,8 @@ THIS_DIR="$( cd "$(dirname ${BASH_SOURCE[0]})" && pwd)"
 # "a6dbae07-f1f7-49da-ab9d-4dab678a37a8" is the one can repro
 # "8759744f-2170-4c57-b185-a3e9167eb496" is another sub
 subscriptions=("a6dbae07-f1f7-49da-ab9d-4dab678a37a8" "8759744f-2170-4c57-b185-a3e9167eb496")
-regions=("canadaeast" "eastus" "eastasia" "westeurope" "southeastasia" "uksouth")
-# regions=("uksouth")
+# regions=("canadaeast" "eastus" "eastasia" "westeurope" "southeastasia" "uksouth")
+regions=("uksouth")
 
 ahareproscript="${THIS_DIR}/aharepro.sh"
 echo "# starting validation from here:" > $ahareproscript
