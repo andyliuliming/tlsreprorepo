@@ -12,7 +12,7 @@ THIS_DIR="$( cd "$(dirname ${BASH_SOURCE[0]})" && pwd)"
 # "8759744f-2170-4c57-b185-a3e9167eb496" is another sub
 subscriptions=("a6dbae07-f1f7-49da-ab9d-4dab678a37a8" "8759744f-2170-4c57-b185-a3e9167eb496")
 regions=("canadaeast" "eastus" "eastasia" "westeurope" "southeastasia" "uksouth")
-# regions=("eastus")
+# regions=("uksouth")
 
 ahareproscript="${THIS_DIR}/aharepro.sh"
 echo "# starting validation from here:" > $ahareproscript
@@ -54,9 +54,9 @@ for region in ${regions[@]}; do
         az account set --subscription $subscription
         # echo "deleting resource group tlsrepro$region"
         # az group delete --name "tlsrepro$region" --yes --no-wait || true
-        echo "creating resource group tlsrepro$region"
+        # echo "creating resource group tlsrepro$region"
         az group create --name "tlsrepro$region" --location $region || true
-        for i in {1..5}; do
+        for i in {1..30}; do
             vmname="tlsrepro$regionvmname$i"
             echo "creating vm $vmname in $region"
             az vm create \
