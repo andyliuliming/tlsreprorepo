@@ -54,7 +54,7 @@ for region in ${regions[@]}; do
         az account set --subscription $subscription
         # echo "deleting resource group tlsrepro$region"
         # az group delete --name "tlsrepro$region" --yes --no-wait || true
-        # echo "creating resource group tlsrepro$region"
+        echo "creating resource group tlsrepro$region"
         az group create --name "tlsrepro$region" --location $region || true
         for i in {1..30}; do
             vmname="tlsrepro$regionvmname$i"
